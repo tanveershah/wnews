@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "a cool news webapp",
   "scripts": {
-    "start": "nodemon app.js",
-    "start:pro": "node app.js"
+    "start:dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
