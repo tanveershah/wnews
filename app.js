@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const { list, find } = require("./postData");
 const path = require("path");
+const timeAgo = require('node-time-ago')
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.get("/", (req, res) => {
             <small>(by ${post.name})</small>
           </p>
           <small class="news-info">
-            ${post.upvotes} upvotes | ${post.date}
+            ${post.upvotes} upvotes | ${timeAgo(post.date)}
           </small>
         </div>`
         )
@@ -49,26 +50,28 @@ app.get("/posts/:id", (req, res) => {
   const postId = req.params.id;
   const post = find(postId);
   if (!post.id) {
-    res.status(404);
+    throw new Error('Not Found')
+  }
+  //   res.status(404);
 
-    const htmlDoc = `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>Wizard News</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <header><img src="/logo.png"/>Wizard News</header>
-    <div class="not-found">
-      <p>Accio Page! 🧙‍♀️ ... Page Not Found</p>
-      <img src="/dumbledore-404.gif" />
-    </div>
-  </body>
-  </html>`;
+  //   const htmlDoc = `
+  // <!DOCTYPE html>
+  // <html>
+  // <head>
+  //   <title>Wizard News</title>
+  //   <link rel="stylesheet" href="/style.css" />
+  // </head>
+  // <body>
+  //   <header><img src="/logo.png"/>Wizard News</header>
+  //   <div class="not-found">
+  //     <p>Accio Page! 🧙‍♀️ ... Page Not Found</p>
+  //     <img src="/dumbledore-404.gif" />
+  //   </div>
+  // </body>
+  // </html>`;
 
-    res.send(htmlDoc);
-  } else {
+  //   res.send(htmlDoc);
+  // } else {
     const htmlDoc = `<!DOCTYPE html>
   <html>
   <head>
@@ -95,7 +98,7 @@ app.get("/posts/:id", (req, res) => {
 </html>`;
 
     res.send(htmlDoc);
-  }
+  // }
 });
 
 const { PORT = 1337 } = process.env;
